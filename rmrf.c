@@ -96,6 +96,7 @@ main(int argc, char *argv[])
 	}
 	close(fd);
 	rmrf(argv[2]);
+	unlink(argv[2]);
 	exit();	
 }
   for(i = 1; i < argc; i++){
