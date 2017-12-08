@@ -168,7 +168,6 @@ cpr(char *src,char *dest)
 	}
       if(st.type==1){
         if(fmtname(buf)[0]=='.')continue;
-	printf(1,"dir terjadi\n");
 	char newsrc[512];
 	char newdest[512];
 	strcpy(newsrc,src);
