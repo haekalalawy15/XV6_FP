@@ -76,7 +76,6 @@ mvstar(char *src,char *dest,char *starext)
 	}
       if(st.type==1){
         if(fmtname(buf)[0]=='.')continue;
-	printf(1,"dir terjadi\n");
 	char newsrc[512];
 	char newdest[512];
 	strcpy(newsrc,src);
@@ -86,7 +85,7 @@ mvstar(char *src,char *dest,char *starext)
 	strcat(newdest,"/");
 	strcat(newdest,p);
 	mkdir(newdest);
-	unlink(src);
+	unlink(newsrc);
 	mvstar(newsrc,newdest,starext);	
 	}
        else{
@@ -104,10 +103,10 @@ mvstar(char *src,char *dest,char *starext)
 	//	printf(1,"file terkopi\n");
 		in=open(newsrc,O_RDONLY);
 		out=open(newdest,O_CREATE | O_RDWR);
-        	while((a=read(in,buffer,sizeof(buffer)))>0) 
+        	while((a=read(in,buffer,in))>0) 
 		{
 			//printf(1,"%s\n",buffer);		
-			write(in,buffer,sizeof(buffer));
+			write(out,buffer,in);
 		}
 		unlink(newsrc);
 		close(in);
@@ -125,12 +124,11 @@ mvstar(char *src,char *dest,char *starext)
         		strcat(newsrc,"/");
 			strcat(newsrc,p);
         		int in,out;
-			printf(1,"file terjadi\n");
 			in=open(newsrc,O_RDONLY);
 			out=open(newdest,O_CREATE | O_RDWR);
         		while((a=read(in,buffer,sizeof(buffer)))>0) 
 			{
-			write(in,buffer,sizeof(buffer));
+			write(out,buffer,in);
 			}
 			unlink(newsrc);
 			close(in);
@@ -170,7 +168,7 @@ void mv(char *src,char *dest){
 		close(fd1);
 		fd1=open(sec,O_CREATE | O_RDWR);
 	}
-	while((n=read(fd0,buffer,sizeof(buffer)))>0) write(fd1,buffer,sizeof(buffer));
+	while((n=read(fd0,buffer,sizeof(buffer)))>0) write(fd1,buffer,fd0);
 	unlink(src);
 	close(fd0);
 	close(fd1);
