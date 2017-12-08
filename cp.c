@@ -82,7 +82,7 @@ cpstar(char *src,char *dest,char *starext)
         	strcat(newsrc,"/");
 		strcat(newsrc,p);
         	int in,out;
-	//	printf(1,"file terjadi\n");
+	//	printf(1,"file terkopi\n");
 		in=open(newsrc,O_RDONLY);
 		out=open(newdest,O_CREATE | O_RDWR);
         	while((a=read(in,buffer,sizeof(buffer)))>0) 
@@ -110,7 +110,6 @@ cpstar(char *src,char *dest,char *starext)
 			out=open(newdest,O_CREATE | O_RDWR);
         		while((a=read(in,buffer,sizeof(buffer)))>0) 
 			{
-			//printf(1,"%s\n",buffer);		
 			write(in,buffer,sizeof(buffer));
 			}
 			close(in);
@@ -194,7 +193,7 @@ cpr(char *src,char *dest)
         strcat(newsrc,"/");
 	strcat(newsrc,p);
         int in,out;
-//	printf(1,"file terjadi\n");
+//	printf(1,"file terkopi\n");
 	//printf(1,"%s %s\n",newsrc,newdest);
         in=open(newsrc,O_RDONLY);
 	out=open(newdest,O_CREATE | O_RDWR);
@@ -263,11 +262,16 @@ int main(int argc, char *argv[]){
 		cpr(src,dest);
 		exit();	
 	}
-	if(argc==3 && argv[1][0]=='*'){
-		dest=argv[2];
-		if (strlen(argv[1])>1)		
+	if(argv[1][0]=='*'){
+		if(argc==3){
+		dest=argv[2];	
 		cpstar(".",dest,argv[1]);
-		else cpstar(".",dest,argv[1]);
+		}
+		else if(argc==4){
+		src=argv[2];
+		dest=argv[3];
+		cpstar(src,dest,argv[1]);		
+		}
 		exit();	
 	}
 }
