@@ -19,6 +19,6 @@ int main(int argc, char *argv[])
 	else
 	{
 		printf(1, "Could not change directory.\n");
-    exit();
+    		exit();
 	}
 }
