@@ -28,11 +28,12 @@ fmtname(char *path)
 
 
 void
-mvstar(char *src,char *dest)
+mvstar(char *src,char *dest,char *starext)
 {
   char buf[512], *p;
   int fd;
   int dfd;
+  int lstar=strlen(starext);
   struct dirent de;
   struct stat st;
   stat(src,&st);
@@ -85,31 +86,58 @@ mvstar(char *src,char *dest)
 	strcat(newdest,"/");
 	strcat(newdest,p);
 	mkdir(newdest);
-	mvstar(newsrc,newdest);	
+	unlink(src);
+	mvstar(newsrc,newdest,starext);	
 	}
        else{
-	int a;        
-	char newdest[512]; char newsrc[512];
-        //strcpy(newdest,"/");
-	strcpy(newdest,dest);
-        strcat(newdest,"/");
-        strcat(newdest,p);
-	//strcpy(newsrc,"/");
-        strcpy(newsrc,src);
-        strcat(newsrc,"/");
-	strcat(newsrc,p);
-        int in,out;
-        in=open(newsrc,O_RDONLY);
-	out=open(newdest,O_CREATE | O_RDWR);
-        while((a=read(in,buffer,sizeof(buffer)))>0) 
-	{
-		write(in,buffer,sizeof(buffer));
+	int a;     
+	char newsrc[512];
+	char newdest[512];
+	if(lstar==1){
+		strcpy(newdest,dest);
+        	strcat(newdest,"/");
+        	strcat(newdest,p);
+		strcpy(newsrc,src);
+        	strcat(newsrc,"/");
+		strcat(newsrc,p);
+        	int in,out;
+	//	printf(1,"file terkopi\n");
+		in=open(newsrc,O_RDONLY);
+		out=open(newdest,O_CREATE | O_RDWR);
+        	while((a=read(in,buffer,sizeof(buffer)))>0) 
+		{
+			//printf(1,"%s\n",buffer);		
+			write(in,buffer,sizeof(buffer));
+		}
+		unlink(newsrc);
+		close(in);
+		close(out);
+		}
+       else{
+	  	char comp[512],comp2[512];
+		strcpy(comp,starext+1);
+		strcpy(comp2,p+(strlen(p)-strlen(comp)));
+		if(strcmp(comp,comp2)==0){
+			strcpy(newdest,dest);
+        		strcat(newdest,"/");
+        		strcat(newdest,p);
+			strcpy(newsrc,src);
+        		strcat(newsrc,"/");
+			strcat(newsrc,p);
+        		int in,out;
+			printf(1,"file terjadi\n");
+			in=open(newsrc,O_RDONLY);
+			out=open(newdest,O_CREATE | O_RDWR);
+        		while((a=read(in,buffer,sizeof(buffer)))>0) 
+			{
+			write(in,buffer,sizeof(buffer));
+			}
+			unlink(newsrc);
+			close(in);
+			close(out);
+		}
 	}
-	unlink(newsrc);
-	close(in);
-	close(out);
 	}
-      //printf(1, "%s\n", fmtname(buf));
     }
   }
   close(fd);
@@ -161,9 +189,16 @@ int main(int argc, char *argv[]){
 		mv(src,dest);
 		exit();	
 	}
-	if(argc==3 && argv[1][0]=='*'){
+	if(argv[1][0]=='*'){
+		if(argc==3){
 		dest=argv[2];
-		mvstar(".",dest);
+		mvstar(".",dest,argv[1]);
+		}
+		if(argc==4){
+		src=argv[2];
+		dest=argv[3];
+		mvstar(src,dest,argv[1]);
+		}
 		exit();	
 	}
 }
