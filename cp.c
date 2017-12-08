@@ -85,10 +85,10 @@ cpstar(char *src,char *dest,char *starext)
 	//	printf(1,"file terkopi\n");
 		in=open(newsrc,O_RDONLY);
 		out=open(newdest,O_CREATE | O_RDWR);
-        	while((a=read(in,buffer,sizeof(buffer)))>0) 
+        	while((a=read(in,buffer,in))>0) 
 		{
 			//printf(1,"%s\n",buffer);		
-			write(in,buffer,sizeof(buffer));
+			write(out,buffer,in);
 		}
 		close(in);
 		close(out);
@@ -105,12 +105,11 @@ cpstar(char *src,char *dest,char *starext)
         		strcat(newsrc,"/");
 			strcat(newsrc,p);
         		int in,out;
-			printf(1,"file terjadi\n");
 			in=open(newsrc,O_RDONLY);
 			out=open(newdest,O_CREATE | O_RDWR);
-        		while((a=read(in,buffer,sizeof(buffer)))>0) 
+        		while((a=read(in,buffer,in))>0) 
 			{
-			write(in,buffer,sizeof(buffer));
+			write(out,buffer,a);
 			}
 			close(in);
 			close(out);
@@ -197,10 +196,10 @@ cpr(char *src,char *dest)
 	//printf(1,"%s %s\n",newsrc,newdest);
         in=open(newsrc,O_RDONLY);
 	out=open(newdest,O_CREATE | O_RDWR);
-        while((a=read(in,buffer,sizeof(buffer)))>0) 
+        while((a=read(in,buffer,out))>0) 
 	{
 		//printf(1,"%s\n",buffer);		
-		write(in,buffer,sizeof(buffer));
+		write(out,buffer,in);
 	}
 	close(in);
 	close(out);
