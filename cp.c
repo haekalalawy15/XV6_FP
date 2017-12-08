@@ -263,7 +263,7 @@ int main(int argc, char *argv[]){
 		cpr(src,dest);
 		exit();	
 	}
-	if((argc==4 || argc==3) && argv[1][0]=='*'){
+	if(argc==3 && argv[1][0]=='*'){
 		dest=argv[2];
 		if (strlen(argv[1])>1)		
 		cpstar(".",dest,argv[1]);
