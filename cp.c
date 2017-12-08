@@ -238,7 +238,7 @@ void cp(char *src,char *dest){
 		fd1=open(sec,O_CREATE | O_RDWR);
 	}
 //	char buffer[512];
-	while((n=read(fd0,buffer,sizeof(buffer)))>0) write(fd1,buffer,sizeof(buffer));
+	while((n=read(fd0,buffer,sizeof(buffer)))>0) write(fd1,buffer,n);
 	close(fd0);
 	close(fd1);
 
